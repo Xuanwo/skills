@@ -27,7 +27,7 @@ Run a review loop where humans annotate an existing draft and Agents respond blo
    - Apply the edit directly to the document.
 5. Keep unrelated sections untouched.
 6. Remove temporary collaboration markers (including `===`) after applying edits, unless the user explicitly asks to keep them.
-7. Finish the round with a concise per-block response so humans can continue the next review cycle.
+7. Finish the round with a concise progress update so humans can continue the next review cycle.
 
 ## Intent inference rules
 
@@ -40,14 +40,10 @@ Run a review loop where humans annotate an existing draft and Agents respond blo
    - Document consistency.
    - Minimal-risk change.
 
-## Per-block response format (each review round)
+## Response style
 
-Use a compact list with one item per block:
-
-- `Block`: short locator (heading or first words)
-- `Signal`: `ADD`, `DELETE`, or `===`
-- `Interpretation`: what the user likely wants
-- `Applied`: what was changed in the document
+1. Prefer natural, concise summaries aligned with user style and context.
+2. Keep output focused on what was changed and what remains unresolved (if any).
 
 ## Editing checklist
 
@@ -58,4 +54,4 @@ Use a compact list with one item per block:
 
 ## Fallback
 
-If no review signals are found, report that no `ADD/DELETE/===` blocks were detected in this round and wait for the next annotated review.
+If no review signals are found, reply briefly that this round has no actionable annotation blocks and wait for the next annotated review.
