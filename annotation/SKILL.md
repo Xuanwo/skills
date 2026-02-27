@@ -16,15 +16,17 @@ Run a review loop where humans annotate an existing draft and Agents respond blo
 ## Required behavior
 
 1. Locate the reviewed document (for example `PLAN.md`) and read the latest full content before editing.
-2. Detect three review signals:
+2. Detect review signals:
    - Added content (new paragraphs or explicit add/insert instructions).
    - Deletion intent (removed text, strike-through text, or explicit delete/remove instructions).
    - Paragraphs containing `===` markers.
+   - User questions that request explanation, rationale, or decision guidance.
 3. Split detected signals into independent review blocks.
 4. For each block in the current round, do all of the following:
    - Infer likely intent from surrounding context.
    - Reply with the intended action briefly.
    - Apply the edit directly to the document.
+   - If the block is a question, provide a direct and sufficiently detailed answer before applying related edits (if any).
 5. Keep unrelated sections untouched.
 6. Remove temporary collaboration markers (including `===`) after applying edits, unless the user explicitly asks to keep them.
 7. Finish the round with a concise progress update so humans can continue the next review cycle.
@@ -40,6 +42,16 @@ Run a review loop where humans annotate an existing draft and Agents respond blo
    - Document consistency.
    - Minimal-risk change.
 
+## Question handling
+
+1. Treat explicit user questions as first-class review inputs, even when no `ADD/DELETE/===` marker is present.
+2. Answer questions with enough detail to unblock the next step:
+   - direct conclusion;
+   - key reasoning and assumptions;
+   - concrete recommendation or next action.
+3. If a question implies document changes, apply those changes in the same round when safe and clear.
+4. If critical information is missing and could change correctness, ask only the minimum focused clarification needed.
+
 ## Response style
 
 1. Prefer natural, concise summaries aligned with user style and context.
@@ -54,4 +66,4 @@ Run a review loop where humans annotate an existing draft and Agents respond blo
 
 ## Fallback
 
-If no review signals are found, reply briefly that this round has no actionable annotation blocks and wait for the next annotated review.
+If no review signals or actionable questions are found, reply briefly that this round has no actionable annotation blocks and wait for the next annotated review.
