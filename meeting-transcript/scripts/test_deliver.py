@@ -46,7 +46,7 @@ class DeliveryTest(unittest.TestCase):
         self.assertLess(operations.index("sha256sum"), operations.index("mv"))
         self.assertEqual((self.session / "audio.m4a").read_bytes(), b"DO NOT TRANSFER")
 
-    def test_completed_archive_with_changed_content_is_not_overwritten(self):
+    def test_existing_meeting_with_changed_content_is_not_overwritten(self):
         with patch.object(deliver, "remote", return_value=SimpleNamespace(returncode=0)), \
                 patch.object(deliver, "hashes", return_value=["changed", "changed"]), \
                 patch.object(deliver.subprocess, "run") as copy:
